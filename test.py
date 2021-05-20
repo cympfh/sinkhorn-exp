@@ -1,8 +1,7 @@
 import numpy
 import streamlit as sl
 
-"""# Random Test"""
-n = sl.slider("size", min_value=1, max_value=20)
+"""# Transportation Problem"""
 
 
 @sl.cache
@@ -17,6 +16,8 @@ def random_problem(size: int):
     return a, b, c
 
 
+"""## Random Test"""
+n = sl.slider("size", min_value=1, max_value=20)
 a, b, c = random_problem(n)
 """a, b"""
 sl.write(a)
@@ -63,8 +64,7 @@ sl.write("cost", numpy.sum(c * p))
 
 
 """# Sorting Problem"""
-n = sl.slider("array size", min_value=1, max_value=20)
-lm = sl.slider("lambda!", min_value=1, max_value=2000)
+
 
 @sl.cache
 def random_array(size: int):
@@ -85,11 +85,34 @@ def my_sort(x, lm: float):
     return p
 
 
+"""## Random Array"""
+n = sl.slider("array size", min_value=1, max_value=20)
+lm = sl.slider("lambda!", min_value=1, max_value=2000)
+
 x = random_array(n)
 sl.write("sorting x:", x)
 
 p = my_sort(x, lm)
-sl.write("loss", numpy.sum(c * p))
+
+s = n * numpy.transpose(p) @ x
+sl.write("Sorted(x)", s)
+
+acc = numpy.array(range(1, n + 1)) / n
+r = n * n * p @ acc
+sl.write("Rank(x)", r)
+
+
+"""## Sorting 3 items"""
+n = 3
+a = sl.slider("item_a", min_value=0.0, max_value=10.0, step=0.1)
+b = sl.slider("item_b", min_value=0.0, max_value=10.0, step=0.1)
+c = sl.slider("item_c", min_value=0.0, max_value=10.0, step=0.1)
+
+x = [a, b, c]
+sl.write("sorting x:", x)
+
+lm = 100.0
+p = my_sort(x, lm)
 
 s = n * numpy.transpose(p) @ x
 sl.write("Sorted(x)", s)
