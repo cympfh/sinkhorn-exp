@@ -73,15 +73,15 @@ def random_array(size: int):
     return x
 
 
-def my_sort(x, lm: float):
+def my_sort(x, lm: float, iter: int = 200):
     """Sorting with Transportation Problem Solver"""
     n = len(x)
     y = numpy.array(range(n))
-    a = numpy.ones(n) / n
-    b = numpy.ones(n) / n
+    a = numpy.ones(n)
+    b = numpy.ones(n)
     c = numpy.array([[(x[i] - y[j]) ** 2.0 for j in range(n)] for i in range(n)])
     c /= c.sum()
-    p = solve(a, b, c, lm, 100)
+    p = solve(a, b, c, lm, iter)
     return p
 
 
@@ -111,12 +111,14 @@ c = sl.slider("item_c", min_value=0.0, max_value=10.0, step=0.1)
 x = [a, b, c]
 sl.write("sorting x:", x)
 
-lm = 100.0
-p = my_sort(x, lm)
+lm = 300.0
+p = my_sort(x, lm, iter=3000)
 
-s = n * numpy.transpose(p) @ x
+sl.write("Optimal Transprot", p)
+
+s = numpy.transpose(p) @ x
 sl.write("Sorted(x)", s)
 
-acc = numpy.array(range(1, n + 1)) / n
-r = n * n * p @ acc
+ranks = numpy.array(range(1, n + 1))  # [1, 2, ..., n]
+r = p @ ranks
 sl.write("Rank(x)", r)
